@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todo/tabs/all_tasks.dart';
+import 'package:todo/tabs/complete_tasks.dart';
+import 'package:todo/tabs/incomplete_tasks.dart';
 
 import 'widgets/raised_gradient_button.dart';
 
@@ -15,6 +18,7 @@ class _HomePageState extends State<HomePage>
   final DateTime now = DateTime.now();
   final DateFormat formatter = DateFormat('dd MMM yyyy, EEEE');
   late TabController tabController;
+  late ScrollController scrollController;
 
   @override
   void initState() {
@@ -28,6 +32,13 @@ class _HomePageState extends State<HomePage>
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
+        floatingActionButton: FloatingActionButton(
+          elevation: 4.0,
+          child: const Icon(Icons.add, size: 35.0),
+          onPressed: () {
+            //scrollableModalBottomSheet(context);
+          },
+        ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -63,20 +74,29 @@ class _HomePageState extends State<HomePage>
                   SizedBox(width: 10),
                   Text(
                     'Search',
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ],
               ),
             ),
+            //TabBar
             // ignore: avoid_unnecessary_containers
             Container(
               child: TabBar(
                 controller: tabController,
-                labelColor: Colors.black,
-                unselectedLabelColor: Colors.green,
+                labelColor: Colors.white,
+                labelStyle: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                ),
+                unselectedLabelColor: Colors.blue,
                 unselectedLabelStyle: const TextStyle(
-                  color: Colors.blue,
-                  fontSize: 18,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
                 ),
                 padding: const EdgeInsets.all(15.0),
                 indicator: const BoxDecoration(
@@ -86,9 +106,9 @@ class _HomePageState extends State<HomePage>
                   color: Colors.blue,
                 ),
                 tabs: const [
-                  Tab(text: 'All'),
+                  Tab(text: 'Active'),
                   Tab(text: 'Complete'),
-                  Tab(text: 'Incomplete'),
+                  Tab(text: 'Trash'),
                 ],
               ),
             ),
@@ -96,15 +116,43 @@ class _HomePageState extends State<HomePage>
               child: TabBarView(
                 controller: tabController,
                 children: const [
-                  Text('Hello World'),
-                  Text('Hello World 2'),
-                  Text('Hello World3 '),
+                  AllTasks(),
+                  CompleteTasks(),
+                  IncompleteTasks(),
                 ],
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Future<dynamic> scrollableModalBottomSheet(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      isDismissible: true,
+      enableDrag: true,
+      backgroundColor: Colors.transparent,
+      builder: ((context) => DraggableScrollableSheet(
+            initialChildSize: 0.25,
+            minChildSize: 0.2,
+            maxChildSize: 1,
+            builder: (context, scrollController) {
+              return Container(
+                color: Colors.white,
+                child: ListView.builder(
+                  itemBuilder: ((context, index) {
+                    return ListTile(
+                      title: Text('Item ${index + 1}'),
+                    );
+                  }),
+                  itemCount: 20,
+                ),
+              );
+            },
+          )),
     );
   }
 }
