@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo/tabs/all_tasks.dart';
 import 'package:todo/tabs/complete_tasks.dart';
-import 'package:todo/tabs/incomplete_tasks.dart';
 
 import 'widgets/raised_gradient_button.dart';
 
@@ -23,7 +22,7 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: 3, vsync: this);
+    tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -34,6 +33,7 @@ class _HomePageState extends State<HomePage>
         resizeToAvoidBottomInset: false,
         floatingActionButton: FloatingActionButton(
           elevation: 4.0,
+          tooltip: 'Add a new to-do to your list.',
           child: const Icon(Icons.add, size: 35.0),
           onPressed: () {
             //scrollableModalBottomSheet(context);
@@ -56,6 +56,7 @@ class _HomePageState extends State<HomePage>
                 style: const TextStyle(color: Colors.grey, fontSize: 18),
               ),
             ),
+            //Search Button
             RaisedGradientButton(
               gradient: LinearGradient(
                 colors: <Color>[
@@ -108,7 +109,6 @@ class _HomePageState extends State<HomePage>
                 tabs: const [
                   Tab(text: 'Active'),
                   Tab(text: 'Complete'),
-                  Tab(text: 'Trash'),
                 ],
               ),
             ),
@@ -118,7 +118,6 @@ class _HomePageState extends State<HomePage>
                 children: const [
                   AllTasks(),
                   CompleteTasks(),
-                  IncompleteTasks(),
                 ],
               ),
             ),

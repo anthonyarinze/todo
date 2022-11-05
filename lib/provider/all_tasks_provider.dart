@@ -6,15 +6,17 @@ class TodoProvider with ChangeNotifier {
   //Dummy tasks
   final List<TodoModel> _tasks = [
     TodoModel(
-        todoTitle: 'Buy a house',
-        date: '10:00',
-        completed: false,
-        location: 'Abuja'),
+      todoTitle: 'Buy a house',
+      date: '10:00',
+      completed: false,
+      location: 'Abuja',
+    ),
     TodoModel(
-        todoTitle: 'Buy a car',
-        date: '10:00',
-        completed: false,
-        location: 'Lagos'),
+      todoTitle: 'Buy a car',
+      date: '10:00',
+      completed: false,
+      location: 'Lagos',
+    ),
   ];
 
   //To get all the tasks
@@ -27,10 +29,11 @@ class TodoProvider with ChangeNotifier {
   //All new added tasks must be uncompleted
   void addTask(String task, DateTime dateTime, String location) {
     _tasks.add(TodoModel(
-        todoTitle: task,
-        date: dateTime.toString(),
-        completed: false,
-        location: location));
+      todoTitle: task,
+      date: dateTime.toString(),
+      completed: false,
+      location: location,
+    ));
     notifyListeners();
   }
 

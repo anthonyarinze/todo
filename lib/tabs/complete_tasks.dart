@@ -32,11 +32,11 @@ class _CompleteTasksState extends State<CompleteTasks> {
 
           leading: Checkbox(
               //toggle the task as index item
-              value: task.allTasks[index].completed,
-              onChanged: (value) => task.toggleTask(task.allTasks[index])),
+              value: task.completeTasks[index].completed,
+              onChanged: (value) => task.toggleTask(task.completeTasks[index])),
           //show all the task title
           title: Text(
-            task.allTasks[index].todoTitle,
+            task.completeTasks[index].todoTitle,
             style: const TextStyle(decoration: TextDecoration.lineThrough),
           ),
           trailing: Column(
@@ -51,7 +51,7 @@ class _CompleteTasksState extends State<CompleteTasks> {
               ),
             ],
           ),
-          subtitle: Text(task.allTasks[index].location),
+          subtitle: Text(task.completeTasks[index].location),
         ),
       ),
     );
