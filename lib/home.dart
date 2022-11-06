@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo/tabs/all_tasks.dart';
 import 'package:todo/tabs/complete_tasks.dart';
-
+import 'package:todo/widgets/add_task.dart';
 import 'widgets/raised_gradient_button.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,7 +36,16 @@ class _HomePageState extends State<HomePage>
           tooltip: 'Add a new to-do to your list.',
           child: const Icon(Icons.add, size: 35.0),
           onPressed: () {
-            //scrollableModalBottomSheet(context);
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(30),
+                ),
+              ),
+              builder: (context) => const AddTask(),
+            );
           },
         ),
         body: Column(
@@ -124,34 +133,6 @@ class _HomePageState extends State<HomePage>
           ],
         ),
       ),
-    );
-  }
-
-  Future<dynamic> scrollableModalBottomSheet(BuildContext context) {
-    return showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      isDismissible: true,
-      enableDrag: true,
-      backgroundColor: Colors.transparent,
-      builder: ((context) => DraggableScrollableSheet(
-            initialChildSize: 0.25,
-            minChildSize: 0.2,
-            maxChildSize: 1,
-            builder: (context, scrollController) {
-              return Container(
-                color: Colors.white,
-                child: ListView.builder(
-                  itemBuilder: ((context, index) {
-                    return ListTile(
-                      title: Text('Item ${index + 1}'),
-                    );
-                  }),
-                  itemCount: 20,
-                ),
-              );
-            },
-          )),
     );
   }
 }
