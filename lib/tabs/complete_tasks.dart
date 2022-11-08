@@ -41,7 +41,7 @@ class _CompleteTasksState extends State<CompleteTasks> {
           ),
           trailing: Column(
             children: [
-              Text(task.allTasks[index].date),
+              Text(task.allTasks[index].date.toString()),
               IconButton(
                 onPressed: () {
                   //delete task as index item

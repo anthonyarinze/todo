@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AddTask extends StatefulWidget {
   const AddTask({super.key});
@@ -10,6 +11,8 @@ class AddTask extends StatefulWidget {
 class _AddTaskState extends State<AddTask> {
   TextEditingController titleController = TextEditingController();
   TextEditingController detailsController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
   bool _validate = false;
   bool date = false;
 
@@ -18,6 +21,8 @@ class _AddTaskState extends State<AddTask> {
     super.dispose();
     titleController.dispose();
     detailsController.dispose();
+    _dateController.dispose();
+    _timeController.dispose();
   }
 
   @override
@@ -30,6 +35,7 @@ class _AddTaskState extends State<AddTask> {
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
+            //Header Row
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -55,6 +61,9 @@ class _AddTaskState extends State<AddTask> {
                             ? _validate = true
                             : _validate = false;
                       });
+
+                      //Testing add button
+                      print(titleController.text);
                     },
                     child: const Text(
                       'Add',
@@ -64,6 +73,8 @@ class _AddTaskState extends State<AddTask> {
                 ],
               ),
             ),
+
+            //Title and about container
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Material(
@@ -129,51 +140,86 @@ class _AddTaskState extends State<AddTask> {
                 ),
               ),
             ),
+
+            //Date Selector Button
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.fromLTRB(15, 8, 15, 0),
               child: Material(
                 elevation: 4.0,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(20.0),
                   ),
-                  //side: BorderSide(color: Colors.blue),
                 ),
-                child: ExpansionTile(
-                  leading: const Icon(Icons.calendar_month_rounded,
-                      color: Colors.red),
-                  title: const Text('Date'),
-                  trailing: Switch(
-                      value: date,
-                      onChanged: ((value) => setState(() async {
-                            date = value;
-                            if (date == true) {
-                              DateTime? pickedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1990),
-                                  lastDate: DateTime(2100));
-                              print(pickedDate);
-                            }
-                          }))),
-                  children: const [
-                    Divider(
-                      thickness: 2.0,
-                      height: 1.0,
-                      indent: 70.0,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _dateController,
+                    keyboardType: TextInputType.none,
+                    decoration: const InputDecoration(
+                      icon: Padding(
+                        padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                        child: Icon(Icons.calendar_today_rounded),
+                      ),
+                      labelText: "Select Date",
+                      border: InputBorder.none,
                     ),
-                    // Container(
-                    //   height: 480,
-                    //   decoration: const BoxDecoration(
-                    //       color: Colors.transparent,
-                    //       borderRadius:
-                    //           BorderRadius.all(Radius.circular(20.0))),
-                    //   child: DatePickerDialog(
-                    //       initialDate: DateTime.now(),
-                    //       firstDate: DateTime(1990),
-                    //       lastDate: DateTime(2100)),
-                    // ),
-                  ],
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2001),
+                        lastDate: DateTime(2100),
+                      );
+
+                      if (pickedDate != null) {
+                        setState(() {
+                          _dateController.text = DateFormat('dd MMM yyyy, EEEE')
+                              .format(pickedDate);
+                        });
+                      }
+                    },
+                  ),
+                ),
+              ),
+            ),
+
+            //Time Picker
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 8, 15, 0),
+              child: Material(
+                elevation: 4.0,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20.0),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _timeController,
+                    keyboardType: TextInputType.none,
+                    decoration: const InputDecoration(
+                      icon: Padding(
+                        padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                        child: Icon(Icons.calendar_today_rounded),
+                      ),
+                      labelText: "Select Time",
+                      border: InputBorder.none,
+                    ),
+                    onTap: () async {
+                      final newTime = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+
+                      if (newTime != null) {
+                        setState(() {
+                          _timeController.text = newTime.format(context);
+                        });
+                      }
+                    },
+                  ),
                 ),
               ),
             ),

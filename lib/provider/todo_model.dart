@@ -5,11 +5,13 @@ class TodoModel {
   String todoTitle;
   bool completed;
   String location;
-  String date;
+  String time;
+  DateTime date;
   TodoModel({
     required this.todoTitle,
     required this.completed,
     required this.date,
+    required this.time,
     required this.location,
   });
 

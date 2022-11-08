@@ -7,13 +7,15 @@ class TodoProvider with ChangeNotifier {
   final List<TodoModel> _tasks = [
     TodoModel(
       todoTitle: 'Buy a house',
-      date: '10:00',
+      date: DateTime.now(),
+      time: "${DateTime.now().hour}:${DateTime.now().minute}",
       completed: false,
       location: 'Abuja',
     ),
     TodoModel(
       todoTitle: 'Buy a car',
-      date: '10:00',
+      date: DateTime.now(),
+      time: "${DateTime.now().hour}:${DateTime.now().minute}",
       completed: false,
       location: 'Lagos',
     ),
@@ -27,10 +29,11 @@ class TodoProvider with ChangeNotifier {
       UnmodifiableListView(_tasks.where((element) => !element.completed));
 
   //All new added tasks must be uncompleted
-  void addTask(String task, DateTime dateTime, String location) {
+  void addTask(String task, DateTime date, String location, String time) {
     _tasks.add(TodoModel(
       todoTitle: task,
-      date: dateTime.toString(),
+      date: date,
+      time: time,
       completed: false,
       location: location,
     ));

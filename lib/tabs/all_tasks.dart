@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/provider/all_tasks_provider.dart';
 
@@ -11,6 +12,8 @@ class AllTasks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final task = Provider.of<TodoProvider>(context);
+    final DateFormat formatter = DateFormat('dd MMM yyyy, EEEE');
+
     return ListView.separated(
       separatorBuilder: (context, index) => const SizedBox(height: 15),
       shrinkWrap: true,
@@ -36,10 +39,14 @@ class AllTasks extends StatelessWidget {
           //show all the task title
           title: Text(
             task.incompleteTasks[index].todoTitle,
+            overflow: TextOverflow.ellipsis,
           ),
           trailing: Column(
             children: [
-              Text(task.incompleteTasks[index].date),
+              Text(
+                task.incompleteTasks[index].time,
+                overflow: TextOverflow.ellipsis,
+              ),
               IconButton(
                 onPressed: () {
                   //delete task as index item
@@ -49,7 +56,19 @@ class AllTasks extends StatelessWidget {
               ),
             ],
           ),
-          subtitle: Text(task.incompleteTasks[index].location),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                task.incompleteTasks[index].location,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                formatter.format(task.allTasks[index].date),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
         ),
       ),
     );
