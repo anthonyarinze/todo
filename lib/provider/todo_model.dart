@@ -6,7 +6,7 @@ class TodoModel {
   bool completed;
   String location;
   String time;
-  DateTime date;
+  String date;
   TodoModel({
     required this.todoTitle,
     required this.completed,

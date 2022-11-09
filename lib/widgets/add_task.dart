@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/provider/all_tasks_provider.dart';
 
 class AddTask extends StatefulWidget {
   const AddTask({super.key});
@@ -14,6 +16,8 @@ class _AddTaskState extends State<AddTask> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
   bool _validate = false;
+  bool _dateValidate = false;
+  bool _timeValidate = false;
   bool date = false;
 
   @override
@@ -27,6 +31,7 @@ class _AddTaskState extends State<AddTask> {
 
   @override
   Widget build(BuildContext context) {
+    final task = Provider.of<TodoProvider>(context);
     return FractionallySizedBox(
       widthFactor: 1.0,
       heightFactor: 0.95,
@@ -60,10 +65,22 @@ class _AddTaskState extends State<AddTask> {
                         titleController.text.isEmpty
                             ? _validate = true
                             : _validate = false;
+                        _dateController.text.isEmpty
+                            ? _dateValidate = true
+                            : _dateValidate = false;
+                        _timeController.text.isEmpty
+                            ? _timeValidate = true
+                            : _timeValidate = false;
                       });
 
                       //Testing add button
-                      print(titleController.text);
+                      task.addTask(
+                        titleController.text,
+                        _dateController.text,
+                        "Bauchi",
+                        _timeController.text,
+                      );
+                      Navigator.pop(context);
                     },
                     child: const Text(
                       'Add',
@@ -111,10 +128,9 @@ class _AddTaskState extends State<AddTask> {
                         ),
                       ),
                       const Divider(
-                        height: 2.0,
                         thickness: 2.0,
+                        height: 2.0,
                         indent: 15.0,
-                        endIndent: 15.0,
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
@@ -156,12 +172,13 @@ class _AddTaskState extends State<AddTask> {
                   child: TextField(
                     controller: _dateController,
                     keyboardType: TextInputType.none,
-                    decoration: const InputDecoration(
-                      icon: Padding(
+                    decoration: InputDecoration(
+                      icon: const Padding(
                         padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                         child: Icon(Icons.calendar_today_rounded),
                       ),
                       labelText: "Select Date",
+                      errorText: _dateValidate ? "Please select a date" : null,
                       border: InputBorder.none,
                     ),
                     onTap: () async {
@@ -199,12 +216,13 @@ class _AddTaskState extends State<AddTask> {
                   child: TextField(
                     controller: _timeController,
                     keyboardType: TextInputType.none,
-                    decoration: const InputDecoration(
-                      icon: Padding(
+                    decoration: InputDecoration(
+                      icon: const Padding(
                         padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                         child: Icon(Icons.calendar_today_rounded),
                       ),
                       labelText: "Select Time",
+                      errorText: _timeValidate ? "Please select a time" : null,
                       border: InputBorder.none,
                     ),
                     onTap: () async {

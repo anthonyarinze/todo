@@ -64,7 +64,7 @@ class AllTasks extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
-                formatter.format(task.allTasks[index].date),
+                task.allTasks[index].date,
                 overflow: TextOverflow.ellipsis,
               ),
             ],
