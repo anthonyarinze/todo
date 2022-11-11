@@ -12,19 +12,20 @@ class AddTask extends StatefulWidget {
 
 class _AddTaskState extends State<AddTask> {
   TextEditingController titleController = TextEditingController();
-  TextEditingController detailsController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
   bool _validate = false;
   bool _dateValidate = false;
   bool _timeValidate = false;
+  bool _locationValidate = false;
   bool date = false;
 
   @override
   void dispose() {
     super.dispose();
     titleController.dispose();
-    detailsController.dispose();
+    locationController.dispose();
     _dateController.dispose();
     _timeController.dispose();
   }
@@ -59,28 +60,38 @@ class _AddTaskState extends State<AddTask> {
                       fontSize: 27,
                     ),
                   ),
+
+                  //Add task button
                   TextButton(
                     onPressed: () {
                       setState(() {
                         titleController.text.isEmpty
                             ? _validate = true
                             : _validate = false;
+                        locationController.text.isEmpty
+                            ? _locationValidate = true
+                            : _locationValidate = false;
                         _dateController.text.isEmpty
                             ? _dateValidate = true
                             : _dateValidate = false;
                         _timeController.text.isEmpty
                             ? _timeValidate = true
                             : _timeValidate = false;
+                        if (_validate == false &&
+                            _locationValidate == false &&
+                            _dateValidate == false &&
+                            _timeValidate == false) {
+                          task.addTask(
+                            titleController.text,
+                            _dateController.text,
+                            locationController.text,
+                            _timeController.text,
+                          );
+                          Navigator.pop(context);
+                        } else {
+                          return;
+                        }
                       });
-
-                      //Testing add button
-                      task.addTask(
-                        titleController.text,
-                        _dateController.text,
-                        "Bauchi",
-                        _timeController.text,
-                      );
-                      Navigator.pop(context);
                     },
                     child: const Text(
                       'Add',
@@ -103,7 +114,7 @@ class _AddTaskState extends State<AddTask> {
                   //side: BorderSide(color: Colors.blue),
                 ),
                 child: Container(
-                  height: 300,
+                  height: 200,
                   width: double.infinity,
                   decoration: const BoxDecoration(
                     color: Colors.white,
@@ -135,16 +146,19 @@ class _AddTaskState extends State<AddTask> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                         child: TextField(
-                          controller: detailsController,
+                          controller: locationController,
                           keyboardType: TextInputType.multiline,
-                          maxLines: 10,
+                          maxLines: 3,
                           style: const TextStyle(
                             overflow: TextOverflow.ellipsis,
                           ),
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: 'About',
-                            hintStyle: TextStyle(
+                            hintText: 'Location',
+                            errorText: _locationValidate
+                                ? "Location can't be empty"
+                                : null,
+                            hintStyle: const TextStyle(
                               color: Colors.grey,
                               fontSize: 20,
                             ),
